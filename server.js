@@ -126,8 +126,31 @@ app.put('/api/v1/clients/:id', (req, res) => {
   const client = clients.find(client => client.id === id);
 
   /* ---------- Update code below ----------*/
+  if (status === client.status) {
+    return res.status(200).send(clients);
+  }
 
+  if (!priority) {
+    priority = db.prepare('select * from clients where status = ?').all(status).length + 1
+  }
 
+  let prev_status = client.status
+  let prev_priority = client.priority
+  client.status = status
+  client.priority = priority
+
+  for (var i=0; i<clients.length; i++) {
+    if (i!==id-1 && clients[i].status === status) {
+      if (clients[i].priority >= priority) {
+        clients[i].priority++;
+      }
+    }
+    if (i!==id-1 && clients[i].status === prev_status) {
+      if (clients[i].priority >= prev_priority) {
+        clients[i].priority--;
+      }
+    }
+  }
 
   return res.status(200).send(clients);
 });
