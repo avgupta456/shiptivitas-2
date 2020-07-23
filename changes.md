@@ -1,0 +1,3 @@
+## Changes
+
+I first setup my local environment and downloaded the current code. After understanding the current code, it was a fairly straightforward method to implement the new function. First, I checked if the item was changing columns; if not, no changes needed to be made. If it was changing columns, I noted the start and end column and position in the column. When the end position was not specified, I used the length of the column + 1. Then I iterated through the items, and modified existing positions up or down depending on their column and position relative to the moving item. The only slight complication was the 1-indexing requiring some debugging.
